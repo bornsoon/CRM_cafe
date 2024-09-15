@@ -1,0 +1,42 @@
+{% extends "table.html" %}
+
+{% block style1 %}
+<link rel="stylesheet" href="{{ url_for('static', filename='search.css') }}"/>
+{% endblock %}
+
+{% block bar %}
+<form action="/item" method="POST">
+    <div class="form_container">
+        <div class="input_box">
+            <label for="name"> Name: </label>
+            <input type="text" name="name" value="{{ name }}">
+            <lable for="per_page"> Type: </lable>
+            <select name = "arg" class="pointer">
+                <option value=""></option>
+                <option value="beverage" {%if arg=="beverage"%}selected{%endif%}>Beverage</option>
+                <option value="coffee" {%if arg=="coffee"%}selected{%endif%}>Coffee</option>
+                <option value="food" {%if arg=="food"%}selected{%endif%}>Food</option>
+            </select>
+            <input type="submit" value="검색" class="pointer">
+        </div>
+        <div class="select_box">
+            <lable for="per_page" >표시할 항목 수:</lable>
+            <select onchange="this.form.submit()" name = "per_page" class="pointer">
+                {% for i in range(1,41)%}
+                <option value="{{ i }}" {% if per_page == i %} selected {% endif %}>{{ i }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block table_tr %}
+    {% for value in values %}
+    <tr class="pointer" onclick="location.href='/itemDetail/{{ value[0] }}'">
+        {% for v in value %}
+        <td> {{ v }} </td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+{% endblock %}

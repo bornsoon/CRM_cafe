@@ -1,0 +1,42 @@
+.wrap {
+    width: 100%;
+    margin: 5px;
+}
+.form_container {
+    display: flex;
+    margin: 12px;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.input_box {
+    width: calc(100% - 700px);
+    padding-left: 200px;
+}
+.select_box {
+    padding-left: 8px;
+    padding-right: 8px;
+    margin-right: 30px;
+}
+form * {
+    color: rgb(80, 80, 80);
+}
+input[type='submit'] {
+    background-color: rgb(159, 202, 216);
+    padding-left: 8px;
+    padding-right: 8px;
+    border: solid 0px rgb(70, 70, 70);
+    border-radius: 10px;
+    text-align: center;
+}
+input[type='submit']:hover {
+    background-color: rgb(156, 212, 255);
+    color: white;
+    scale: 120%;
+}
+input, select {
+    background-color: rgb(240, 240, 240);
+    padding: 5px;
+    border: solid 1px rgb(80, 80, 80);
+    border-radius: 10px;
+}

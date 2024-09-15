@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block title %}Detail[ {{paging.category}} ]{% endblock %}
+
+{% block style %}
+<style>
+    tr * {
+        padding: 10px;
+    }
+    #div1 {
+        display: flex;
+        justify-content: space-around;
+    }
+    li {
+        text-align: left;
+        margin: 13px;
+    }
+    
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<div style="padding:10px; border-bottom: solid 1px rgb(130, 130, 130);">
+    상품 정보
+</div>
+<table>
+    <tr>
+        {% for key in keys %}
+        <th> {{ key }} </th>
+        {% endfor %}
+    </tr>
+    <tr>
+        {% for i in item %}
+        <td> {{ i }} </td>
+        {% endfor %}
+    </tr>        
+</table>
+<br>
+<div style="padding:10px; border-bottom: solid 1px rgb(130, 130, 130);">
+    {% if revenue_month %} 월간 매출액 {% endif %}
+    {% if revenue_date %} 일간 매출액 {% endif %}
+</div>
+<div style="overflow: auto; max-height: 25vh">
+    <table>
+        {% if revenue_month %}
+        <tr>
+            <th> Month </th>
+            <th> Revenue </th>
+            <th> Count </th>
+        </tr>
+            {% for i in revenue_month %}
+            <tr class="pointer" onclick="location.href='./{{ item[0] }}/{{ i[0] }}'">
+                <td> {{ i[3] }} </td>
+                <td> {{ i[1] }} </td>
+                <td> {{ i[2] }} </td>
+            </tr>
+            {% endfor %}
+        {% endif %}
+
+        {% if revenue_date %}
+        <tr>
+            <th> Date </th>
+            <th> Revenue </th>
+            <th> Count </th>
+        </tr>
+            {% for i in revenue_date %}
+            <tr>
+                <td> {{ i[3] }} </td>
+                <td> {{ i[1] }} </td>
+                <td> {{ i[2] }} </td>
+            </tr>
+            {% endfor %}
+        {% endif %}      
+    </table>
+</div>
+
+<div style="padding:10px; border-bottom: solid 1px rgb(130, 130, 130);">
+    월별 매출액 그래프
+</div>
+    <canvas id="barChart" width="450" height= "90"></canvas>
+
+    <script>
+        const ctx = document.getElementById('barChart').getContext('2d');
+
+        // let per = '{{ per }}'.replace('[','').replace(']','').split(",")
+        // per = per.map(x => x.replace('&#39;', '').replace('&#39;', '')).reverse()
+
+        // let per_revenue = '{{ per_revenue }}'.replace('[','').replace(']','').split(",")
+        // per_revenue = per_revenue.map(x => x.replace('&#39;', '').replace('&#39;', '')).reverse()
+
+        // let per_count = '{{ per_count }}'.replace('[','').replace(']','').split(", ")
+        // per_count = per_count.map(x => parseInt(x)).reverse()
+
+        const per = {{ per | tojson }}
+        const per_revenue = {{ per_revenue | tojson }}
+        const per_count = {{ per_count | tojson }}
+        const mixedChart = new Chart(ctx, {
+            data: {
+                datasets: [
+                    {
+                        type: 'line',
+                        label: 'Count',
+                        yAxisID: 'y-right',
+                        data: per_count,
+                        fill: false,
+                        borderColor: 'rgb(54, 162, 235)'
+                    } , {
+                        type: 'bar',
+                        label: 'Revenue',
+                        yAxisID: 'y-left',
+                        data: per_revenue,
+                        backgroundColor: ['pink', 'skyblue']
+                    } , 
+                ],
+                    labels: per
+            },
+            options: {
+                    'y-left': {
+                        position: 'left'
+                    },
+                    'y-right': {
+                        position: 'right'
+                    }  
+                }
+            });
+    </script>
+
+{% endblock %}
